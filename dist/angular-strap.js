@@ -1605,6 +1605,25 @@
             }
           }
         };
+        scope.$selectAllAtOnce = function() {
+          if (!options.multiple) scope.$selectAll(); else {
+            var newActiveIndex = [];
+            for (var i = 0; i < scope.$matches.length; i++) newActiveIndex.push(i);
+            scope.$activeIndex = newActiveIndex;
+            controller.$setViewValue(scope.$activeIndex.map(function(index) {
+              if (angular.isUndefined(scope.$matches[index])) {
+                return null;
+              }
+              return scope.$matches[index].value;
+            }));
+          }
+        };
+        scope.$selectNoneAtOnce = function() {
+          if (!options.multiple) scope.$selectNone(); else {
+            scope.$activeIndex = [];
+            controller.$setViewValue([]);
+          }
+        };
         $select.update = function(matches) {
           scope.$matches = matches;
           $select.$updateActiveIndex();
